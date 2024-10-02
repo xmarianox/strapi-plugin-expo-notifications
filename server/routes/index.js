@@ -5,6 +5,7 @@ module.exports = [
     handler: "exponotification.lastEntries",
     config: {
       policies: ["admin::isAuthenticatedAdmin"],
+      // policies: [],
       // auth: false,
     },
   },
@@ -14,6 +15,7 @@ module.exports = [
     handler: "exponotification.getContentTypes",
     config: {
       policies: ["admin::isAuthenticatedAdmin"],
+      // policies: [],
       // auth: false,
     },
   },
@@ -23,6 +25,7 @@ module.exports = [
     handler: "exponotification.getPluginConfig",
     config: {
       policies: ["admin::isAuthenticatedAdmin"],
+      // policies: [],
       // auth: false,
     },
   },
@@ -32,6 +35,7 @@ module.exports = [
     handler: "exponotification.find",
     config: {
       policies: ["admin::isAuthenticatedAdmin"],
+      // policies: [],
       // auth: false,
     },
   },
@@ -41,6 +45,7 @@ module.exports = [
     handler: "exponotification.findFrom",
     config: {
       policies: ["admin::isAuthenticatedAdmin"],
+      // policies: [],
       // auth: false,
     },
   },

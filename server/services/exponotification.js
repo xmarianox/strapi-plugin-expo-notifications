@@ -87,7 +87,7 @@ module.exports = ({ strapi }) => ({
       messages.push(messagetoSend);
     }
     let chunks = expo.chunkPushNotifications(messages);
-    const tickets = await sendWithExpo(expo, chunks);
+    const tickets = await sendWithExpo(expo, chunks, strapi);
     let combinedArray = [];
     for (let i = 0; i < chunks[0].length; i++) {
       let chunk = chunks[0][i];
