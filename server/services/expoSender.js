@@ -30,13 +30,25 @@ module.exports = () => ({
         tickets.push(...ticketChunk);
 
         // Guardar la notificación enviada en la base de datos
-        for (let message of chunk) { 
+        // for (let message of chunk) {
+        //   await strapi.entityService.create("api::nofication.nofication", {
+        //     data: {
+        //       title: message.title,
+        //       subtitle: message.body || "",
+        //       message: message.body,
+        //       publishedAt: message.createdAt || new Date().toISOString(),
+        //     },
+        //   });
+        // }
+        // Guardar solo una notificación por envío (no por destinatario)
+        if (chunk.length > 0) {
+          const firstMessage = chunk[0];
           await strapi.entityService.create("api::nofication.nofication", {
             data: {
-              title: message.title,
-              subtitle: message.body || "",
-              message: message.body,
-              publishedAt: message.createdAt || new Date().toISOString(),
+              title: firstMessage.title,
+              subtitle: firstMessage.body || "",
+              message: firstMessage.body,
+              publishedAt: firstMessage.createdAt || new Date().toISOString(),
             },
           });
         }
