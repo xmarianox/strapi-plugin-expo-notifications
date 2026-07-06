@@ -29,14 +29,15 @@ module.exports = () => ({
         console.log("ticketChunk", ticketChunk);
         tickets.push(...ticketChunk);
 
-        // Guardar la notificación enviada en la base de datos
-        for (let message of chunk) { 
+        // Guardar solo una notificación por envío (no por destinatario)
+        if (chunk.length > 0) {
+          const firstMessage = chunk[0];
           await strapi.documents("api::nofication.nofication").create({
             data: {
-              title: message.title,
-              subtitle: message.body || "",
-              message: message.body,
-              publishedAt: message.createdAt || new Date().toISOString(),
+              title: firstMessage.title,
+              subtitle: firstMessage.body || "",
+              message: firstMessage.body,
+              publishedAt: firstMessage.createdAt || new Date().toISOString(),
             },
           });
         }
