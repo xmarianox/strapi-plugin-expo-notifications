@@ -37,8 +37,8 @@ module.exports = () => ({
               title: firstMessage.title,
               subtitle: firstMessage.body || "",
               message: firstMessage.body,
-              publishedAt: firstMessage.createdAt || new Date().toISOString(),
             },
+            status: "published",
           });
         }
       } catch (error) {

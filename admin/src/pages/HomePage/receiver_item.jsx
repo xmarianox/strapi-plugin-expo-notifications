@@ -15,10 +15,10 @@ export default function ReceiverItem({ item, tokens, removeToken, addToken }) {
     <Box paddingBottom={2}>
       <div style={{ display: "flex" }}>
         <Checkbox
-          aria-label="Simple checkbox"
-          name="default"
-          onValueChange={manageChange}
-          value={isIn() ? true : false}
+          aria-label={label}
+          name={label}
+          onCheckedChange={manageChange}
+          checked={isIn()}
         />
         <div style={{ marginLeft: 6 }}>
           <div style={{ fontWeight: isIn() ? "700" : "400" }}>
