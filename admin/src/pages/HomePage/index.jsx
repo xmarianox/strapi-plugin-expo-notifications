@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import useQueryParams from "../../utils/useQueryParams";
-import { useFetchClient } from "@strapi/helper-plugin";
-
 import Main from "./main";
 
 import { buildReceiversOptions } from "./functions";
+
+import { useFetchClient } from "@strapi/strapi/admin";
 
 export default function HomePageWithData() {
   const { get } = useFetchClient();

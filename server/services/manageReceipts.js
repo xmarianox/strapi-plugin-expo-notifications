@@ -25,16 +25,13 @@ async function fetchReceipts(strapi, strapiNotification, expo, tickets) {
           }
         }
       }
-      const { id, receivers } = strapiNotification;
-      return await strapi.entityService.update(
-        "plugin::expo-notifications.exponotification",
-        id,
-        {
-          data: {
-            receivers: { ...receivers, errorsWhileReceiving: receiptsErrors },
-          },
-        }
-      );
+      const { documentId, receivers } = strapiNotification;
+      return await strapi.documents("plugin::expo-notifications.exponotification").update({
+        documentId,
+        data: {
+          receivers: { ...receivers, errorsWhileReceiving: receiptsErrors },
+        },
+      });
     } catch (error) {
       console.error(error);
     }

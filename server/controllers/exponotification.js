@@ -4,7 +4,7 @@ module.exports = {
   async lastEntries(ctx) {
     const { contentTypeUid } = ctx.params;
     try {
-      const entries = await strapi.entityService.findMany(contentTypeUid, {
+      const entries = await strapi.documents(contentTypeUid).findMany({
         sort: { updatedAt: "desc" },
         limit: 10,
       });

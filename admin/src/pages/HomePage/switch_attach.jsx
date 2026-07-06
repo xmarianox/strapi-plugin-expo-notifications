@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Typography, Box } from "@strapi/design-system";
-import { Attachment } from "@strapi/icons";
+import { Paperclip as Attachment } from "@strapi/icons";
 import AttachAnEntry from "./attach_an_entry";
 
 import { useIntl } from "react-intl";

@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { parse, stringify } from "qs";
 
 const useQueryParams = (initialParams) => {
   const { search } = useLocation();
-  const { push } = useHistory();
+  const navigate = useNavigate();
 
   const query = useMemo(() => {
     const searchQuery = search.substring(1);
@@ -28,9 +28,9 @@ const useQueryParams = (initialParams) => {
         nextQuery = { ...query, ...nextParams };
       }
 
-      push({ search: stringify(nextQuery, { encode: false }) });
+      navigate({ search: stringify(nextQuery, { encode: false }) });
     },
-    [push, query]
+    [navigate, query]
   );
 
   return [{ query, rawQuery: search }, setQuery];

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { useFetchClient } from "@strapi/helper-plugin";
-import { Grid, GridItem } from "@strapi/design-system";
-
+import { Grid } from "@strapi/design-system";
 import Selector from "./selector";
+
 import MakeItTitle from "./make_it_title";
+import { useFetchClient } from "@strapi/strapi/admin";
 
 const buildOptionsFromContentTypes = (contentTypes) => {
   const options = [];
@@ -79,8 +79,8 @@ export default function AttachAnEntry(props) {
   }
   return (
     <div>
-      <Grid gap={5}>
-        <GridItem col={3}>
+      <Grid.Root gap={5}>
+        <Grid.Item col={3}>
           <Selector
             type="Content type"
             options={contentTypes}
@@ -89,8 +89,8 @@ export default function AttachAnEntry(props) {
             placeholder="Select a content type"
             loading={loading}
           />
-        </GridItem>
-        <GridItem col={9}>
+        </Grid.Item>
+        <Grid.Item col={9}>
           <Selector
             type="Entry"
             options={entries}
@@ -102,8 +102,8 @@ export default function AttachAnEntry(props) {
             formik={formik}
             label={getLabelFromValue(formik.values.entryId)}
           />
-        </GridItem>
-      </Grid>
+        </Grid.Item>
+      </Grid.Root>
     </div>
   );
 }

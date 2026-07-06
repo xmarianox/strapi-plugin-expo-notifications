@@ -1,37 +1,24 @@
 import React, { useState } from "react";
 
-import { Switch, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Empty from "./empty";
-import { useFetchClient } from "@strapi/helper-plugin";
+import { Layouts } from "@strapi/strapi/admin";
 
-import { Icon } from "@strapi/design-system/Icon";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
-import {
-  BaseHeaderLayout,
-  TwoColsLayout,
-  ContentLayout,
-} from "@strapi/design-system/Layout";
 
 import { useIntl } from "react-intl";
 
 import Sender from "./sender";
+
 import Sent from "./sent";
 import Receivers from "./receivers";
-
 import pluginId from "../../pluginId";
+
 import getTrad from "../../utils/getTrad";
 import { getContentTypeName } from "./functions";
+import { useFetchClient } from "@strapi/strapi/admin";
 
-const Pencil = () => (
-  <Icon
-    width={`${25 / 16}rem`}
-    height={`${25 / 16}rem`}
-    color="secondary500"
-    as={Pencil}
-  />
-);
 
 export default function Main({
   notifications,
@@ -119,7 +106,7 @@ export default function Main({
 
   return (
     <div>
-      <BaseHeaderLayout
+      <Layouts.Header
         title={formatMessage({
           id: getTrad("plugin.name"),
           defaultMessage: "My notifications",
@@ -130,42 +117,41 @@ export default function Main({
         })}`}
         as="h2"
       />
-      <ContentLayout>
-        <TwoColsLayout
-          startCol={
-            <Sender
-              formik={formik}
-              sendTest={sendTest}
-              sendForReal={sendForReal}
-              testToken={testToken}
-            />
-          }
-          endCol={
-            <Receivers
-              receivers={receivers}
-              receiversCount={receiversCount}
-              tokens={tokens}
-              setTokens={setTokens}
-              addToken={addToken}
-              removeToken={removeToken}
-              addAll={addAll}
-              removeAll={removeAll}
-            />
-          }
-        />
-        <div style={{ paddingTop: 12 }}>
-          <Switch>
-            <Route path={`/plugins/${pluginId}`} exact>
-              <Sent
-                notifications={notifications}
-                count={count}
-                isLoading={isLoading}
-              />
-            </Route>
-            <Route component={Empty} />
-          </Switch>
+      <Layouts.Content>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <Sender
+            formik={formik}
+            sendTest={sendTest}
+            sendForReal={sendForReal}
+            testToken={testToken}
+          />
+          <Receivers
+            receivers={receivers}
+            receiversCount={receiversCount}
+            tokens={tokens}
+            setTokens={setTokens}
+            addToken={addToken}
+            removeToken={removeToken}
+            addAll={addAll}
+            removeAll={removeAll}
+          />
         </div>
-      </ContentLayout>
+        <div style={{ paddingTop: 12 }}>
+          <Routes>
+            <Route
+              path={`/plugins/${pluginId}`}
+              element={
+                <Sent
+                  notifications={notifications}
+                  count={count}
+                  isLoading={isLoading}
+                />
+              }
+            />
+            <Route path="*" element={<Empty />} />
+          </Routes>
+        </div>
+      </Layouts.Content>
     </div>
   );
 }

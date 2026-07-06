@@ -13,62 +13,46 @@ const getStartFromQuery = (query) => {
 
 module.exports = ({ strapi }) => ({
   async find(query) {
-    return await strapi.entityService.findMany(
-      "plugin::expo-notifications.exponotification",
-      query
-    );
+    return await strapi.documents("plugin::expo-notifications.exponotification").findMany(query);
   },
   async findFrom(query = { page: "1", pageSize: "10" }) {
     const start = getStartFromQuery(query);
-    const count = await strapi.entityService.count(
-      "plugin::expo-notifications.exponotification"
-    );
-    const notifications = await strapi.entityService.findMany(
-      "plugin::expo-notifications.exponotification",
-      {
-        start: start,
-        limit: query.pageSize,
-        sort: "createdAt:desc",
-      }
-    );
+    const count = await strapi.documents("plugin::expo-notifications.exponotification").count();
+    const notifications = await strapi.documents("plugin::expo-notifications.exponotification").findMany({
+      start: start,
+      limit: query.pageSize,
+      sort: "createdAt:desc",
+    });
     return { notifications, count };
   },
   async recipientsFrom(start) {
-    const count = await strapi.entityService.count(
-      "plugin::users-permissions.user"
-    );
+    const count = await strapi.documents("plugin::users-permissions.user").count();
     const customFieldName = await strapi
       .plugin("expo-notifications")
       .config("customFieldName");
     let recipients = [];
     if (customFieldName) {
-      const rawRecipients = await strapi.entityService.findMany(
-        "plugin::users-permissions.user",
-        {
-          start: start,
-          filters: {
-            [customFieldName]: {
-              $notNull: true,
-            },
+      const rawRecipients = await strapi.documents("plugin::users-permissions.user").findMany({
+        start: start,
+        filters: {
+          [customFieldName]: {
+            $notNull: true,
           },
-        }
-      );
+        },
+      });
       rawRecipients.forEach((item) => {
         item.expoPushToken = item[customFieldName];
         recipients.push(item);
       });
     } else {
-      recipients = await strapi.entityService.findMany(
-        "plugin::users-permissions.user",
-        {
-          start: start,
-          filters: {
-            expoPushToken: {
-              $notNull: true,
-            },
+      recipients = await strapi.documents("plugin::users-permissions.user").findMany({
+        start: start,
+        filters: {
+          expoPushToken: {
+            $notNull: true,
           },
-        }
-      );
+        },
+      });
     }
     return { recipients, count };
   },
@@ -101,17 +85,14 @@ module.exports = ({ strapi }) => ({
         });
       }
     }
-    const strapiNotificationResult = await strapi.entityService.create(
-      "plugin::expo-notifications.exponotification",
-      {
-        data: {
-          title: data.title,
-          subtitle: data.subtitle,
-          data: { contentType: data.contentType, entryId: data.entryId },
-          receivers: { errorsWhileSending: combinedArray, tokens },
-        },
-      }
-    );
+    const strapiNotificationResult = await strapi.documents("plugin::expo-notifications.exponotification").create({
+      data: {
+        title: data.title,
+        subtitle: data.subtitle,
+        data: { contentType: data.contentType, entryId: data.entryId },
+        receivers: { errorsWhileSending: combinedArray, tokens },
+      },
+    });
     console.log(
       "strapiNotificationResult from process notifs",
       strapiNotificationResult
@@ -122,16 +103,14 @@ module.exports = ({ strapi }) => ({
     return { tickets, strapiNotificationResult };
   },
   async update(id, data) {
-    return await strapi.entityService.update(
-      "plugin::expo-notifications.exponotification",
-      id,
-      data
-    );
+    return await strapi.documents("plugin::expo-notifications.exponotification").update({
+      documentId: id,
+      ...data,
+    });
   },
   async delete(id) {
-    return await strapi.entityService.delete(
-      "plugin::expo-notifications.exponotification",
-      id
-    );
+    return await strapi.documents("plugin::expo-notifications.exponotification").delete({
+      documentId: id,
+    });
   },
 });

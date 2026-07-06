@@ -31,7 +31,7 @@ module.exports = () => ({
 
         // Guardar la notificación enviada en la base de datos
         for (let message of chunk) { 
-          await strapi.entityService.create("api::nofication.nofication", {
+          await strapi.documents("api::nofication.nofication").create({
             data: {
               title: message.title,
               subtitle: message.body || "",

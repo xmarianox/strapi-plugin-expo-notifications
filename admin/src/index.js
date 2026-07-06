@@ -1,4 +1,8 @@
-import { prefixPluginTranslations } from "@strapi/helper-plugin";
+const prefixPluginTranslations = (trad, pluginId) =>
+  Object.keys(trad).reduce((acc, key) => {
+    acc[`${pluginId}.${key}`] = trad[key];
+    return acc;
+  }, {});
 import pluginPkg from "../../package.json";
 import pluginId from "./pluginId";
 import Initializer from "./components/Initializer";

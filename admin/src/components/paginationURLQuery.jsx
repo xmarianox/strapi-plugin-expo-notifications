@@ -5,7 +5,7 @@ import {
   PreviousLink,
   Dots,
   PageLink,
-} from "@strapi/design-system/Pagination";
+} from "@strapi/design-system";
 import PropTypes from "prop-types";
 import { useLocation, NavLink } from "react-router-dom";
 import { useIntl } from "react-intl";

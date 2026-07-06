@@ -4,10 +4,8 @@ import {
   Box,
   Typography,
   Button,
-  Stack,
+  Flex,
   Field,
-  FieldLabel,
-  FieldInput,
 } from "@strapi/design-system";
 
 import SwitchAttachAnEntry from "./switch_attach";
@@ -38,15 +36,15 @@ export default function Sender(props) {
               justifyContent: "space-between",
             }}
           >
-            <Stack spacing={4}>
-              <Field name="title">
-                <FieldLabel>
+            <Flex direction="column" gap={4} alignItems="stretch">
+              <Field.Root name="title">
+                <Field.Label>
                   {formatMessage({
                     id: getTrad("title"),
                     defaultMessage: "Title",
                   })}
-                </FieldLabel>
-                <FieldInput
+                </Field.Label>
+                <Field.Input
                   type="text"
                   placeholder={formatMessage({
                     id: getTrad("title.placeholder"),
@@ -56,15 +54,15 @@ export default function Sender(props) {
                   onBlur={formik.handleBlur}
                   value={formik.values.title}
                 />
-              </Field>
-              <Field name="subtitle">
-                <FieldLabel>
+              </Field.Root>
+              <Field.Root name="subtitle">
+                <Field.Label>
                   {formatMessage({
                     id: getTrad("subtitle"),
                     defaultMessage: "Subtitle",
                   })}
-                </FieldLabel>
-                <FieldInput
+                </Field.Label>
+                <Field.Input
                   type="text"
                   placeholder={formatMessage({
                     id: getTrad("subtitle.placeholder"),
@@ -74,9 +72,9 @@ export default function Sender(props) {
                   onBlur={formik.handleBlur}
                   value={formik.values.subtitle}
                 />
-              </Field>
+              </Field.Root>
               <SwitchAttachAnEntry {...props} />
-            </Stack>
+            </Flex>
             <div
               style={{
                 display: "flex",

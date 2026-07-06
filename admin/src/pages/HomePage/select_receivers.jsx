@@ -1,13 +1,13 @@
 import React from "react";
 
-import { Stack, SingleSelect, SingleSelectOption } from "@strapi/design-system";
+import { Flex, SingleSelect, SingleSelectOption } from "@strapi/design-system";
 
 import { buildReceiversOptions } from "./functions";
 
 export default function SelectReceivers({ receivers, tokens, setTokens }) {
   const options = buildReceiversOptions(receivers);
   return (
-    <Stack spacing={11}>
+    <Flex direction="column" gap={11} alignItems="stretch">
       <SingleSelect
         id="select1"
         onClear={() => setTokens([])}
@@ -29,6 +29,6 @@ export default function SelectReceivers({ receivers, tokens, setTokens }) {
           </SingleSelectOption>
         ))}
       </SingleSelect>
-    </Stack>
+    </Flex>
   );
 }

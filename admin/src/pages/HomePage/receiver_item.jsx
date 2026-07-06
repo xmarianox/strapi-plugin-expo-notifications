@@ -1,7 +1,5 @@
 import React from "react";
-import { Box } from "@strapi/design-system/Box";
-import { BaseCheckbox } from "@strapi/design-system/BaseCheckbox";
-import { Typography } from "@strapi/design-system/Typography";
+import { Box, Checkbox, Typography } from "@strapi/design-system";
 
 export default function ReceiverItem({ item, tokens, removeToken, addToken }) {
   const { label, value } = item;
@@ -16,7 +14,7 @@ export default function ReceiverItem({ item, tokens, removeToken, addToken }) {
   return (
     <Box paddingBottom={2}>
       <div style={{ display: "flex" }}>
-        <BaseCheckbox
+        <Checkbox
           aria-label="Simple checkbox"
           name="default"
           onValueChange={manageChange}
