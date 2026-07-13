@@ -59,7 +59,7 @@ module.exports = ({ strapi }) => ({
   async processNotification(body) {
     const { buildMessage, sendWithExpo } = getExpoSender();
     const { scheduleReceiptFetch } = getManageReceipts();
-    const { data, tokens } = body;
+    const { data, tokens, isTest } = body;
     let expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
     let messages = [];
     for (let pushToken of tokens) {
@@ -71,7 +71,7 @@ module.exports = ({ strapi }) => ({
       messages.push(messagetoSend);
     }
     let chunks = expo.chunkPushNotifications(messages);
-    const tickets = await sendWithExpo(expo, chunks, strapi);
+    const tickets = await sendWithExpo(expo, chunks, strapi, isTest);
     let combinedArray = [];
     for (let i = 0; i < chunks[0].length; i++) {
       let chunk = chunks[0][i];

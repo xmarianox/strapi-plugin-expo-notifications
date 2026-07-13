@@ -20,7 +20,7 @@ module.exports = () => ({
     console.log("Plugin will send the following message", messagetoSend);
     return messagetoSend;
   },
-  async sendWithExpo(expo, chunks, strapi) {
+  async sendWithExpo(expo, chunks, strapi, isTest) {
     let tickets = [];
     console.log("chunks", chunks);
     for (let chunk of chunks) {
@@ -38,7 +38,7 @@ module.exports = () => ({
               subtitle: firstMessage.body || "",
               message: firstMessage.body,
             },
-            status: "published",
+            status: isTest ? "draft" : "published",
           });
         }
       } catch (error) {

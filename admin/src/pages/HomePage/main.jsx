@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import { Routes, Route } from "react-router-dom";
-import Empty from "./empty";
 import { Layouts } from "@strapi/strapi/admin";
 
 import { useFormik } from "formik";
@@ -13,7 +11,6 @@ import Sender from "./sender";
 
 import Sent from "./sent";
 import Receivers from "./receivers";
-import pluginId from "../../pluginId";
 
 import getTrad from "../../utils/getTrad";
 import { getContentTypeName } from "./functions";
@@ -70,6 +67,7 @@ export default function Main({
         await post(`/expo-notifications/process-notification`, {
           data: values,
           tokens: testTokens,
+          isTest: true,
         }).then((res) => {
           refreshNotificationsState();
           resetForm();
@@ -80,6 +78,7 @@ export default function Main({
         await post(`/expo-notifications/process-notification`, {
           data: values,
           tokens: tokens,
+          isTest: false,
         }).then((res) => {
           refreshNotificationsState();
           resetForm();
@@ -137,19 +136,11 @@ export default function Main({
           />
         </div>
         <div style={{ paddingTop: 12 }}>
-          <Routes>
-            <Route
-              path={`/plugins/${pluginId}`}
-              element={
-                <Sent
-                  notifications={notifications}
-                  count={count}
-                  isLoading={isLoading}
-                />
-              }
-            />
-            <Route path="*" element={<Empty />} />
-          </Routes>
+          <Sent
+            notifications={notifications}
+            count={count}
+            isLoading={isLoading}
+          />
         </div>
       </Layouts.Content>
     </div>
