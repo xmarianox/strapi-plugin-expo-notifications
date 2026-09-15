@@ -24,11 +24,11 @@ function buildOptionsFromEntries(responseData) {
     return options;
   } else if (Array.isArray(responseData)) {
     options = responseData.map((item) => {
-      return { value: item.id, label: item.title || "No title" };
+      return { value: item.documentId, label: item.title || "No title" };
     });
   } else if (typeof responseData === "object") {
     if ("title" in responseData) {
-      options.push({ value: responseData.id, label: responseData.title });
+      options.push({ value: responseData.documentId, label: responseData.title });
     } else {
       console.error("The object does not have a title property");
     }
