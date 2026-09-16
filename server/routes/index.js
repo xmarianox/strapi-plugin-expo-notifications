@@ -59,6 +59,15 @@ module.exports = [
     },
   },
   {
+    method: "GET",
+    path: "/segments",
+    handler: "exponotification.getSegments",
+    config: {
+      policies: ["admin::isAuthenticatedAdmin"],
+      // auth: false,
+    },
+  },
+  {
     method: "POST",
     path: "/process-notification",
     handler: "exponotification.processNotification",

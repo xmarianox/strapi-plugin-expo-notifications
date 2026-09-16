@@ -1,5 +1,10 @@
 import React from "react";
-import { Box, Typography } from "@strapi/design-system";
+import {
+  Box,
+  Typography,
+  SingleSelect,
+  SingleSelectOption,
+} from "@strapi/design-system";
 
 import ReceiverItem from "./receiver_item";
 // import SelectReceivers from "./select_receivers";
@@ -14,6 +19,9 @@ export default function Receivers({
   addAll,
   addToken,
   removeToken,
+  segmentation,
+  segment,
+  setSegment,
   // receiversCount,
   // setTokens,
 }) {
@@ -29,6 +37,32 @@ export default function Receivers({
             })}
           </Typography>
         </Box>
+        {segmentation?.enabled && (
+          <Box paddingBottom={4}>
+            <SingleSelect
+              label={formatMessage({
+                id: getTrad("title.segment"),
+                defaultMessage: "Segment",
+              })}
+              value={segment || "__all__"}
+              onChange={(value) =>
+                setSegment(value === "__all__" ? "" : value)
+              }
+            >
+              <SingleSelectOption value="__all__">
+                {formatMessage({
+                  id: getTrad("segment.all"),
+                  defaultMessage: "All",
+                })}
+              </SingleSelectOption>
+              {segmentation.options.map((option) => (
+                <SingleSelectOption key={option.value} value={option.value}>
+                  {option.label}
+                </SingleSelectOption>
+              ))}
+            </SingleSelect>
+          </Box>
+        )}
         <div
           style={{
             display: "flex",

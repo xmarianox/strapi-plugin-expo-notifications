@@ -39,6 +39,25 @@ module.exports = {
       ctx.throw(500, err);
     }
   },
+  async getSegments(ctx) {
+    try {
+      const segmentation = await strapi
+        .plugin("expo-notifications")
+        .config("segmentation");
+      if (!segmentation) {
+        return { enabled: false, options: [] };
+      }
+      const { contentTypeUid, labelField, valueField } = segmentation;
+      const entries = await strapi.documents(contentTypeUid).findMany();
+      const options = entries.map((entry) => ({
+        label: entry[labelField],
+        value: entry[valueField],
+      }));
+      return { enabled: true, options };
+    } catch (err) {
+      ctx.throw(500, err);
+    }
+  },
   async find(ctx) {
     try {
       return await strapi
@@ -64,7 +83,7 @@ module.exports = {
       return await strapi
         .plugin("expo-notifications")
         .service("exponotification")
-        .recipientsFrom(ctx.params.start);
+        .recipientsFrom(ctx.params.start, ctx.query.segment);
     } catch (err) {
       ctx.throw(500, err);
     }

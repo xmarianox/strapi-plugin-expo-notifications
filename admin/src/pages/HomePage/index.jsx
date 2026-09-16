@@ -15,6 +15,8 @@ export default function HomePageWithData() {
   const [notifications, setNotifications] = useState([]);
   const [receivers, setReceivers] = useState([]);
   const [receiversCount, setReceiversCount] = useState(0);
+  const [segmentation, setSegmentation] = useState({ enabled: false, options: [] });
+  const [segment, setSegment] = useState("");
   const [{ query }] = useQueryParams();
   const fetchConfig = async () => {
     const config = await get(`/expo-notifications/get-plugin-config`);
@@ -22,8 +24,15 @@ export default function HomePageWithData() {
       setTestToken(config.data.testToken);
     }
   };
+  const fetchSegments = async () => {
+    const res = await get(`/expo-notifications/segments`);
+    if (res.data) {
+      setSegmentation(res.data);
+    }
+  };
   const fetchRecipients = async () => {
-    const res = await get(`/expo-notifications/recipientsFrom/0`);
+    const segmentQuery = segment ? `?segment=${encodeURIComponent(segment)}` : "";
+    const res = await get(`/expo-notifications/recipientsFrom/0${segmentQuery}`);
     const { data } = res;
     const options = buildReceiversOptions(
       data.recipients ? data.recipients : []
@@ -58,9 +67,13 @@ export default function HomePageWithData() {
 
   useEffect(() => {
     fetchData();
-    fetchRecipients();
     fetchConfig();
+    fetchSegments();
   }, [query]);
+
+  useEffect(() => {
+    fetchRecipients();
+  }, [segment]);
 
   const refreshNotificationsState = () => {
     fetchData();
@@ -76,6 +89,9 @@ export default function HomePageWithData() {
         refreshNotificationsState={refreshNotificationsState}
         isLoading={isLoading}
         testToken={testToken}
+        segmentation={segmentation}
+        segment={segment}
+        setSegment={setSegment}
       />
     </div>
   );
