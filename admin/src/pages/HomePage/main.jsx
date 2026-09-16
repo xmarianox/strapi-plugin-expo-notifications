@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Layouts } from "@strapi/strapi/admin";
 
@@ -25,11 +25,17 @@ export default function Main({
   refreshNotificationsState,
   isLoading,
   testToken,
+  segmentation,
+  segment,
+  setSegment,
 }) {
   const [tokens, setTokens] = useState([]);
   const [testMode, setTestMode] = useState(false);
   const { post } = useFetchClient();
   const { formatMessage } = useIntl();
+  useEffect(() => {
+    setTokens([]);
+  }, [receivers]);
   const addToken = (token) => {
     setTokens([...tokens, token]);
   };
@@ -133,6 +139,9 @@ export default function Main({
             removeToken={removeToken}
             addAll={addAll}
             removeAll={removeAll}
+            segmentation={segmentation}
+            segment={segment}
+            setSegment={setSegment}
           />
         </div>
         <div style={{ paddingTop: 12 }}>

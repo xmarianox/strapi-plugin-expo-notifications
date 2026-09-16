@@ -20,5 +20,7 @@
   "make.title": "Make it the title",
   "make.subtitle": "Make it the subtitle",
   "Content type": "Content type",
-  "Entry": "Entry"
+  "Entry": "Entry",
+  "title.segment": "Segment",
+  "segment.all": "All"
 }

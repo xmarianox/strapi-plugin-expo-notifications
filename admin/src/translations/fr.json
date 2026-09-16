@@ -20,5 +20,7 @@
   "make.title": "Choisir comme titre",
   "make.subtitle": "Choisir comme sous-titre",
   "Content type": "Type de contenu",
-  "Entry": "Article"
+  "Entry": "Article",
+  "title.segment": "Segment",
+  "segment.all": "Tous"
 }

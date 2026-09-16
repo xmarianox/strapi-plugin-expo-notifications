@@ -25,20 +25,30 @@ module.exports = ({ strapi }) => ({
     });
     return { notifications, count };
   },
-  async recipientsFrom(start) {
+  async recipientsFrom(start, segment) {
     const count = await strapi.documents("plugin::users-permissions.user").count();
     const customFieldName = await strapi
       .plugin("expo-notifications")
       .config("customFieldName");
+    const segmentation = await strapi
+      .plugin("expo-notifications")
+      .config("segmentation");
+    const tokenFieldName = customFieldName || "expoPushToken";
+    const filters = {
+      [tokenFieldName]: {
+        $notNull: true,
+      },
+    };
+    if (segmentation && segment) {
+      filters[segmentation.userField] = {
+        [segmentation.valueField]: segment,
+      };
+    }
     let recipients = [];
     if (customFieldName) {
       const rawRecipients = await strapi.documents("plugin::users-permissions.user").findMany({
         start: start,
-        filters: {
-          [customFieldName]: {
-            $notNull: true,
-          },
-        },
+        filters,
       });
       rawRecipients.forEach((item) => {
         item.expoPushToken = item[customFieldName];
@@ -47,11 +57,7 @@ module.exports = ({ strapi }) => ({
     } else {
       recipients = await strapi.documents("plugin::users-permissions.user").findMany({
         start: start,
-        filters: {
-          expoPushToken: {
-            $notNull: true,
-          },
-        },
+        filters,
       });
     }
     return { recipients, count };
