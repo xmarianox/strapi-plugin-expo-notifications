@@ -5,6 +5,14 @@ import Selector from "./selector";
 
 import MakeItTitle from "./make_it_title";
 import { useFetchClient } from "@strapi/strapi/admin";
+import { getContentTypeName } from "./functions";
+
+// Content types don't have a generic "title" field: resolve the option
+// label from whichever field actually holds a human-readable name.
+const CONTENT_TYPE_LABEL_FIELDS = {
+  beneficio: "titulo",
+  empleado: "name",
+};
 
 const buildOptionsFromContentTypes = (contentTypes) => {
   const options = [];
@@ -18,20 +26,23 @@ const buildOptionsFromContentTypes = (contentTypes) => {
   return options;
 };
 
-function buildOptionsFromEntries(responseData) {
+function getEntryLabel(item, labelField) {
+  return item[labelField] || item.title || "No title";
+}
+
+function buildOptionsFromEntries(responseData, labelField) {
   let options = [];
   if (!responseData) {
     return options;
   } else if (Array.isArray(responseData)) {
     options = responseData.map((item) => {
-      return { value: item.documentId, label: item.title || "No title" };
+      return { value: item.documentId, label: getEntryLabel(item, labelField) };
     });
   } else if (typeof responseData === "object") {
-    if ("title" in responseData) {
-      options.push({ value: responseData.documentId, label: responseData.title });
-    } else {
-      console.error("The object does not have a title property");
-    }
+    options.push({
+      value: responseData.documentId,
+      label: getEntryLabel(responseData, labelField),
+    });
   } else {
     console.error("Response data is neither an array nor an object");
   }
@@ -56,7 +67,8 @@ export default function AttachAnEntry(props) {
   }
   async function fetchEntries(value) {
     const res = await get(`/expo-notifications/get-entries/${value}`);
-    const entriesOptions = buildOptionsFromEntries(res.data);
+    const labelField = CONTENT_TYPE_LABEL_FIELDS[getContentTypeName(value)] || "title";
+    const entriesOptions = buildOptionsFromEntries(res.data, labelField);
     setEntries(entriesOptions);
     if (entriesOptions.length > 0) {
       formik.setFieldValue("entryId", entriesOptions[0].value);
