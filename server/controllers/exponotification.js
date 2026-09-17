@@ -6,7 +6,10 @@ module.exports = {
     try {
       const entries = await strapi.documents(contentTypeUid).findMany({
         sort: { updatedAt: "desc" },
-        limit: 10,
+        // Matches config/api.ts's REST maxLimit — the selector has no search,
+        // so anything past the limit becomes permanently unreachable rather
+        // than just requiring a scroll.
+        limit: 100,
       });
       ctx.send(entries);
     } catch (err) {
